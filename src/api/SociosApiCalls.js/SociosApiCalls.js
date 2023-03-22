@@ -14,6 +14,18 @@ export const getAllSocios = async () =>{
     }
 }
 
+export const getSocioById = async (SocioId)=>{
+    try {
+        const response = await axios.get(rootApiPath+"/socio/"+SocioId);
+        return response.data;
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+        
+    }
+}
+
 export const postNewSocio = async (nombre,apellido,hotmail,edad,domicilio,fechaNacimiento,dni,celular,telFijo,estado) => {
     const body ={
         nombre:nombre,
@@ -29,6 +41,29 @@ export const postNewSocio = async (nombre,apellido,hotmail,edad,domicilio,fechaN
     }
     try {
         const response = await axios.post(rootApiPath+"/socio",body);
+        return response;
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+        
+    }
+}
+
+export const updateSocio = async (id,nombre,apellido,hotmail,edad,domicilio,fechaNacimiento,dni,celular,telFijo) => {
+    const body ={
+        nombre:nombre,
+        apellido:apellido,
+        hotmail:hotmail,
+        edad:edad,
+        domicilio:domicilio,
+        fechaNacimiento: fechaNacimiento,
+        dni: dni,
+        celular: celular,
+        telFijo: telFijo,
+    }
+    try {
+        const response = await axios.put(rootApiPath+"/socio/"+id,body);
         return response;
         
     } catch (error) {

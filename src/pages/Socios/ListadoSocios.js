@@ -26,10 +26,10 @@ const ListadoSocios = () => {
     });
 
     const columns = [
-        { field: 'id', headerName: 'ID Socio', width: 100, headerAlign: 'center', hide: true },
+        { field: 'id', headerName: 'ID Socio', width: 100, headerAlign: 'center', hiden: true },
         {
             field: 'nombre',
-            headerName: 'Nombre del Socio',
+            headerName: 'Nombre',
             width: 300,
         },
         {
@@ -48,58 +48,23 @@ const ListadoSocios = () => {
             headerName: 'Celular',
             width: 300,
         },
-        // {
-        //     field: 'acciones',
-        //     headerName: 'Acciones',
-        //     width: 300,
-        //     headerAlign: 'center',
-        //     disableClickEventBubbling: true,
-        //     renderCell: (params) => {
-        //         const onEdit = (e) => {
-        //             const currentRow = params.row;
-        //             history.push(rootPath + '/Modelos/EditModelo/' + currentRow.id)
-        //         };
-
-        //         const onDelete = (e) => {
-        //             const currentRow = params.row;
-        //             Swal.fire({
-        //                 title: "Esta seguro que desea eliminar el modelo?",
-        //                 icon: 'warning',
-        //                 showCancelButton: true,
-        //                 confirmButtonColor: '#3085d6',
-        //                 cancelButtonColor: '#d33',
-        //                 cancelButtonText: 'Cancelar',
-        //                 confirmButtonText: 'Si, eliminar',
-        //                 preConfirm: () => {
-        //                     console.log(currentRow);
-        //                     deleteSocio(currentRow.id).then((reponse) => {
-        //                         Swal.fire({
-        //                             title: "Modelo eliminado con exito!",
-        //                             icon: 'success',
-        //                             willClose: () => {
-        //                                 loadDataTable()
-        //                             }
-        //                         })
-        //                     })
-        //                         .catch((error) => {
-        //                             Swal.fire({
-        //                                 title: 'Error al eliminar un modelo, intentelo nuevamente',
-        //                                 icon: 'error',
-
-        //                             })
-        //                         });
-        //                 }
-        //             })
-
-        //         }
-        //         return (
-        //             <Stack direction="row" spacing={2}>
-        //                 <Button variant="contained" startIcon={<EditIcon></EditIcon>} color="warning" size="small" onClick={onEdit}>Editar</Button>
-        //                 <Button variant="contained" startIcon={<DeleteIcon></DeleteIcon>} color="error" size="small" onClick={onDelete}>Borrar</Button>
-        //             </Stack>
-        //         );
-        //     },
-        // }
+        {
+            field: 'acciones',
+            headerName: 'Acciones',
+            width: 300,
+            disableClickEventBubbling: true,
+            renderCell: (params) => {
+                const onEdit = (e) => {
+                    const currentRow = params.row;
+                    history.push(rootPath + '/Socios/EditSocio/' + currentRow.id)
+                };
+                return (
+                    <Stack direction="row" spacing={2}>
+                        <Button variant="contained" startIcon={<EditIcon></EditIcon>} color="warning" size="small" onClick={onEdit}>Editar</Button>
+                    </Stack>
+                );
+            },
+        }
     ];
 
 

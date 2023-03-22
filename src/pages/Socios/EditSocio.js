@@ -1,33 +1,55 @@
 import { Box, Breadcrumbs, Button, FormControl, Grid, Stack, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import { rootPath } from '../../App'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { postNewSocio } from '../../api/SociosApiCalls.js/SociosApiCalls';
-import { MobileDatePicker } from '@mui/x-date-pickers';
+import { getSocioById, postNewSocio, updateSocio } from '../../api/SociosApiCalls.js/SociosApiCalls';
+import { MobileDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-const NewSocio = () => {
-
+const EditSocio = () => {
+    let { id } = useParams();
     const history = useHistory()
-    const [Nombre, setNombre] = useState();
-    const [Apellido, setApellido] = useState();
-    const [Email, setEmail] = useState();
-    const [Domicilio, setDomicilio] = useState();
-    const [fechaNacimiento, setfechaNacimiento] = useState('');
-    const [DNI, setDNI] = useState();
-    const [Celular, setCelular] = useState();
-    const [telFijo, settelFijo] = useState();
-    const [Edad, setEdad] = useState();
-    const [Image,setImage] = useState();
+    const [Nombre, setNombre] = useState('');
+    const [Apellido, setApellido] = useState('');
+    const [Email, setEmail] = useState('');
+    const [Domicilio, setDomicilio] = useState('');
+    const [fechaNacimiento, setfechaNacimiento] = useState("");
+    const [DNI, setDNI] = useState('');
+    const [Celular, setCelular] = useState('');
+    const [telFijo, settelFijo] = useState('');
+    const [Edad, setEdad] = useState('');
+    const [Alert, setAlert] = useState();
+    const [AlertError, setAlertError] = useState()
+    const [Error, setError] = useState()
+    const [value, setValue] = React.useState("");
+    
+    useEffect(() => {
+        console.log(id);
+        getSocioById(id).then((response) => {
+            console.log(response);
+            setNombre(response.nombre)
+            setApellido(response.apellido)
+            setCelular(response.celular)
+            setDNI(response.dni)
+            setDomicilio(response.domicilio)
+            setEdad(response.edad)
+            setfechaNacimiento(response.fechaNacimiento)
+            settelFijo(response.telFijo)
+            setEmail(response.hotmail)
+        }).catch((error) => {
+            console.log(error);
+        })
+    }, []);
 
     const handleChangeNombre = (event) => {
         setNombre(event.target.value);
     };
+
     const handleChangeDescripcion = (event) => {
         setApellido(event.target.value);
     };
+
     const handleChangeDomicilio = (event) => {
         setDomicilio(event.target.value);
     };
@@ -39,6 +61,7 @@ const NewSocio = () => {
     const handleChangeDNI = (event) => {
         setDNI(event.target.value);
     };
+
     const handleChangeCelular = (event) => {
         setCelular(event.target.value);
     };
@@ -51,32 +74,28 @@ const NewSocio = () => {
         setEdad(event.target.value);
     };
 
-    const handleImage = (event) => {
-        console.log(event.target.files);
-        console.log(event.target.files[0]);
-        setImage(event.target.files[0]);
-    };
+ 
 
-
-
-
-
-    function AddSocio() {
-        postNewSocio(Nombre, Apellido, Email, Edad, Domicilio, fechaNacimiento, DNI, Celular, telFijo, "ACTIVO").then((response) => {
+    function EditSocio() {
+        setAlert(false);
+        setAlertError(false);
+        updateSocio(id,Nombre, Apellido, Email, Edad, Domicilio, fechaNacimiento, DNI, Celular, telFijo).then((response) => {
+            setAlert(true);
             Swal.fire({
-                title: "Socio registrado con exito!",
+                title: "Socio editado con exito!",
                 icon: 'success',
                 willClose: () => {
-                    setTimeout(() => {
+                    // setTimeout(() => {
                         history.push(rootPath + '/Socios');
-                    }, 1500);
+                    // }, 500);
                 }
             })
-            
             console.log(response);
         })
 
             .catch((error) => {
+                setError(error, 'Error al editar un Socio.');
+                setAlertError(true);
                 Swal.fire({
                     title: error.response.data.message,
                     icon: 'error',
@@ -89,13 +108,15 @@ const NewSocio = () => {
         history.push(rootPath + '/Socios')
     }
 
+
+
     return (
         <Box>
             <Breadcrumbs aria-label="breadcrumb" style={{ margin: 15 }}>
                 <Link underline="hover" color="inherit" onClick={goToBack}>
                     Listado de Socios
                 </Link>
-                <Typography color="text.primary">Nuevo Socio</Typography>
+                <Typography color="text.primary">Editar Socio</Typography>
             </Breadcrumbs>
 
             <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
@@ -144,7 +165,7 @@ const NewSocio = () => {
                 <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
                     <FormControl sx={{ width: '20rem' }} >
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <MobileDatePicker
+                            <MobileDatePicker
                                 label="Fecha de Nacimiento"
                                 openTo='year'
                                 views={['year','month','day']}
@@ -198,31 +219,12 @@ const NewSocio = () => {
 
             </Grid>
 
-            <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
-                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
-                    <Button
-                        variant="contained"
-                        component="label"
-                    >
-                        Foto del Socio
-                        <input
-                            onChange={handleImage}
-                            type="file"
-                            hidden
-                        />
-                    </Button>
-                </Grid>
-                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
-                <Typography>{Image? Image.name: null}</Typography>
-                </Grid>
-            </Grid>
-
 
 
 
             <Stack spacing={2} sx={{ width: '100%' }}>
-                <Button variant="contained" color='success' onClick={AddSocio}>
-                    Registrar Socio
+                <Button variant="contained" color='warning' onClick={EditSocio}>
+                    Editar Socio
                 </Button>
 
             </Stack>
@@ -230,4 +232,4 @@ const NewSocio = () => {
     );
 }
 
-export default NewSocio;
+export default EditSocio;

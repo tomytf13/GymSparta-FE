@@ -4,6 +4,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import Login from './components/Login/Login';
 import ListadoSocios from './pages/Socios/ListadoSocios';
 import NewSocio from './pages/Socios/NewSocio';
+import EditSocio from './pages/Socios/EditSocio';
 export const rootPath ='/Gym';
 
 function App() {
@@ -15,6 +16,9 @@ function App() {
         <Switch>
           <Route path={'/Login'}>
             <Login></Login>
+          </Route>
+          <Route path={rootPath + '/Socios/EditSocio/:id'}>
+            <EditSocio></EditSocio>
           </Route>
           <Route path={rootPath + '/Socios/NewSocio'}>
             <NewSocio></NewSocio>
