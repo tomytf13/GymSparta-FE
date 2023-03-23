@@ -7,10 +7,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { getAllSocios } from '../../api/SociosApiCalls.js/SociosApiCalls';
 import { rootPath } from '../../App';
 
-const ListadoSocios = () => {
+const ListadoPagos = () => {
 
     const history = useHistory();
-    const [Socios, setSocios] = useState([]);
+    const [Pagos, setPagos] = useState([]);
     const [loadingData, setLoadingData] = useState(false);
     const [dense, setDense] = useState(false);
     const [secondary, setSecondary] = useState(false);
@@ -25,7 +25,7 @@ const ListadoSocios = () => {
     });
 
     const columns = [
-        { field: 'id', headerName: 'ID Socio', width: 100, headerAlign: 'center', hiden: true },
+        { field: 'id', headerName: 'ID Pago', width: 100, headerAlign: 'center', hiden: true },
         {
             field: 'nombre',
             headerName: 'Nombre',
@@ -47,23 +47,23 @@ const ListadoSocios = () => {
             headerName: 'Celular',
             width: 300,
         },
-        {
-            field: 'acciones',
-            headerName: 'Acciones',
-            width: 300,
-            disableClickEventBubbling: true,
-            renderCell: (params) => {
-                const onEdit = (e) => {
-                    const currentRow = params.row;
-                    history.push(rootPath + '/Socios/EditSocio/' + currentRow.id)
-                };
-                return (
-                    <Stack direction="row" spacing={2}>
-                        <Button variant="contained" startIcon={<EditIcon></EditIcon>} color="warning" size="small" onClick={onEdit}>Editar</Button>
-                    </Stack>
-                );
-            },
-        }
+        // {
+        //     field: 'acciones',
+        //     headerName: 'Acciones',
+        //     width: 300,
+        //     disableClickEventBubbling: true,
+        //     renderCell: (params) => {
+        //         const onEdit = (e) => {
+        //             const currentRow = params.row;
+        //             history.push(rootPath + '/Socios/EditSocio/' + currentRow.id)
+        //         };
+        //         return (
+        //             <Stack direction="row" spacing={2}>
+        //                 <Button variant="contained" startIcon={<EditIcon></EditIcon>} color="warning" size="small" onClick={onEdit}>Editar</Button>
+        //             </Stack>
+        //         );
+        //     },
+        // }
     ];
 
 
@@ -82,49 +82,49 @@ const ListadoSocios = () => {
         });
     };
 
-    useEffect(() => {
-        setLoadingData(true)
-        getAllSocios().then((response) => {
-            const parsedData = response.map((Socio) => {
-                return {
-                    id: Socio._id,
-                    nombre: Socio.nombre,
-                    apellido: Socio.apellido,
-                    dni: Socio.dni,
-                    celular: Socio.celular
-                };
-            });
-            setSocios(parsedData);
-            setLoadingData(false)
-        }).catch((error) => {
-            setError(error, 'Error al listar Socios.');
-        });
+    // useEffect(() => {
+    //     setLoadingData(true)
+    //     getAllSocios().then((response) => {
+    //         const parsedData = response.map((Socio) => {
+    //             return {
+    //                 id: Socio._id,
+    //                 nombre: Socio.nombre,
+    //                 apellido: Socio.apellido,
+    //                 dni: Socio.dni,
+    //                 celular: Socio.celular
+    //             };
+    //         });
+    //         setSocios(parsedData);
+    //         setLoadingData(false)
+    //     }).catch((error) => {
+    //         setError(error, 'Error al listar Socios.');
+    //     });
 
-    }, [])
+    // }, [])
 
 
-    const goToNewSocio = () => {
-        history.push(rootPath + '/Socios/NewSocio')
+    const goToNewPago = () => {
+        history.push(rootPath + '/Pagos/NewPago')
     };
 
-    const loadDataTable = () => {
-        getAllSocios().then((response) => {
-            const parsedData = response.map((Socio) => {
-                return {
-                    id: Socio._id,
-                    nombre: Socio.nombre,
-                    apellido: Socio.apellido,
-                    dni: Socio.dni,
-                    celular: Socio.celular
-                };
-            });
-            setSocios(parsedData);
-            setLoadingData(false)
-        }).catch((error) => {
-            setError(error, 'Error al listar Socios.');
-        });
+    // const loadDataTable = () => {
+    //     getAllSocios().then((response) => {
+    //         const parsedData = response.map((Socio) => {
+    //             return {
+    //                 id: Socio._id,
+    //                 nombre: Socio.nombre,
+    //                 apellido: Socio.apellido,
+    //                 dni: Socio.dni,
+    //                 celular: Socio.celular
+    //             };
+    //         });
+    //         setSocios(parsedData);
+    //         setLoadingData(false)
+    //     }).catch((error) => {
+    //         setError(error, 'Error al listar Socios.');
+    //     });
 
-    }
+    // }
 
 
 
@@ -134,9 +134,9 @@ const ListadoSocios = () => {
                 <Link underline="hover" color="inherit" onClick={() => history.push(rootPath + "/Inicio")}>
                     Inicio
                 </Link>
-                <Typography color="text.primary">Listado de Socios</Typography>
+                <Typography color="text.primary">Listado de Pagos</Typography>
             </Breadcrumbs>
-            <Button color="primary" onClick={goToNewSocio} variant="contained" size='small'>Nuevo Socio</Button>
+            <Button color="primary" onClick={goToNewPago} variant="contained" size='small'>Nuevo Pago</Button>
             {loadingData === true ?
                 (<><Box sx={{ display: 'flex', justifyContent: "center", marginTop: "10rem" }}>
                     <CircularProgress size={"10rem"} />
@@ -144,7 +144,7 @@ const ListadoSocios = () => {
                 :
                 <Box sx={{ height: 1000, width: '100%' }}>
                     <DataGrid
-                        rows={Socios}
+                        rows={Pagos}
                         columns={columns}
                         pageSize={20}
                         rowsPerPageOptions={[20]}
@@ -161,4 +161,4 @@ const ListadoSocios = () => {
     );
 }
 
-export default ListadoSocios;
+export default ListadoPagos;
