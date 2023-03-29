@@ -40,14 +40,15 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <FitnessCenterIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+    <AppBar position="static" sx={{backgroundColor:'black'}}>
+      <Container maxWidth="xl" >
+        <Toolbar disableGutters >
+          <FitnessCenterIcon sx={{ display: { xs: 'none', md: 'flex',color:'yellow' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
             component="a"
+            style={{color:'yellow'}}
             href="/"
             sx={{
               mr: 2,
@@ -92,8 +93,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={()=>history.push(rootPath+'/'+page)}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page}  onClick={()=>history.push(rootPath+'/'+page)}>
+                  <Typography textAlign="center"> {page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,7 +123,7 @@ function ResponsiveAppBar() {
               <Button
                 key={page}
                 onClick={()=>history.push(rootPath+'/'+page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'yellow', display: 'block' }}
               >
                 {page}
               </Button>

@@ -6,64 +6,43 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getAllSocios } from '../../api/SociosApiCalls.js/SociosApiCalls';
 import { rootPath } from '../../App';
+import { getAllPagos } from '../../api/PagosApiCalls.js/PagosApiCalls';
 
 const ListadoPagos = () => {
 
     const history = useHistory();
     const [Pagos, setPagos] = useState([]);
     const [loadingData, setLoadingData] = useState(false);
-    const [dense, setDense] = useState(false);
-    const [secondary, setSecondary] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
-    const [modalProps, setModalProps] = useState({
-        show: false,
-        message: '',
-        header: '',
-        type: '',
-        confirmButtonMessage: '',
-        onConfirm: () => { },
-    });
-
+  
     const columns = [
         { field: 'id', headerName: 'ID Pago', width: 100, headerAlign: 'center', hiden: true },
         {
-            field: 'nombre',
-            headerName: 'Nombre',
+            field: 'idSocio',
+            headerName: 'Socio ID',
             width: 300,
         },
         {
-            field: 'apellido',
-            headerName: 'Apellido',
-            width: 300,
+            field: 'tipoEntrenamiento',
+            headerName: 'Tipo de Entrenamiento',
+            width: 200,
         },
         {
-            field: 'dni',
-            headerName: 'DNI',
-            width: 300,
+            field: 'tipoPago',
+            headerName: 'Tipo de Pago',
+            width: 200,
         }
         ,
         {
-            field: 'celular',
-            headerName: 'Celular',
+            field: 'monto',
+            headerName: 'Monto $',
+            width: 100,
+        },
+        {
+            field: 'fechaPago',
+            headerName: 'Fecha de Pago',
             width: 300,
         },
-        // {
-        //     field: 'acciones',
-        //     headerName: 'Acciones',
-        //     width: 300,
-        //     disableClickEventBubbling: true,
-        //     renderCell: (params) => {
-        //         const onEdit = (e) => {
-        //             const currentRow = params.row;
-        //             history.push(rootPath + '/Socios/EditSocio/' + currentRow.id)
-        //         };
-        //         return (
-        //             <Stack direction="row" spacing={2}>
-        //                 <Button variant="contained" startIcon={<EditIcon></EditIcon>} color="warning" size="small" onClick={onEdit}>Editar</Button>
-        //             </Stack>
-        //         );
-        //     },
-        // }
     ];
 
 
@@ -74,33 +53,29 @@ const ListadoPagos = () => {
             message = error.response.data.Message;
         }
         console.log(error);
-        setModalProps({
-            show: true,
-            message: message ? message : error.message,
-            header: header ? header : 'Error',
-            type: 'error',
-        });
+       
     };
 
-    // useEffect(() => {
-    //     setLoadingData(true)
-    //     getAllSocios().then((response) => {
-    //         const parsedData = response.map((Socio) => {
-    //             return {
-    //                 id: Socio._id,
-    //                 nombre: Socio.nombre,
-    //                 apellido: Socio.apellido,
-    //                 dni: Socio.dni,
-    //                 celular: Socio.celular
-    //             };
-    //         });
-    //         setSocios(parsedData);
-    //         setLoadingData(false)
-    //     }).catch((error) => {
-    //         setError(error, 'Error al listar Socios.');
-    //     });
+    useEffect(() => {
+        setLoadingData(true)
+        getAllPagos().then((response) => {
+            const parsedData = response.map((Pago) => {
+                return {
+                    id: Pago._id,
+                    idSocio: Pago.idSocio,
+                    tipoEntrenamiento: Pago.tipoEntrenamiento,
+                    tipoPago: Pago.tipoPago,
+                    monto: Pago.monto,
+                    fechaPago:  (new Date(Pago.createAt)).getDate() + '/' +  (new Date(Pago.createAt)).getMonth() + '/' +  (new Date(Pago.createAt)).getFullYear()+ ' ' + (new Date(Pago.createAt)).getHours()+':'+ (new Date(Pago.createAt)).getMinutes()
+                };
+            });
+            setPagos(parsedData);
+            setLoadingData(false)
+        }).catch((error) => {
+            setError(error, 'Error al listar Pagos.');
+        });
 
-    // }, [])
+    }, [])
 
 
     const goToNewPago = () => {

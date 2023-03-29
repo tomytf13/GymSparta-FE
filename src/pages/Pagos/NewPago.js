@@ -1,8 +1,10 @@
-import { Autocomplete, Box, Breadcrumbs, Button, FormControl, Grid, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Breadcrumbs, Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { rootPath } from '../../App'
-import { getAllSocios, postNewPago } from '../../api/SociosApiCalls.js/SociosApiCalls';
+import { getAllSocios } from '../../api/SociosApiCalls.js/SociosApiCalls';
+import Swal from 'sweetalert2';
+import { postNewPago } from '../../api/PagosApiCalls.js/PagosApiCalls';
 
 const NewPago = () => {
 
@@ -16,35 +18,26 @@ const NewPago = () => {
     const [DNI, setDNI] = useState("");
     const [Edad, setEdad] = useState("");
     const [Image, setImage] = useState();
+    const [TipoPago, setTipoPago] = useState('MENSUAL');
+    const [TipoEntrenamiento, setTipoEntrenamiento] = useState('APARATOS');
+    const [Monto, setMonto] = useState('');
 
 
-    const handleChangeNombre = (event) => {
-        setNombre(event.target.value);
-    };
-    const handleChangeDescripcion = (event) => {
-        setApellido(event.target.value);
-    };
-    const handleChangeDomicilio = (event) => {
-        setDomicilio(event.target.value);
-    };
+    const PAGOS =
+        [
+            'MENSUAL',
+            'CLASE'
+        ]
 
-    const handleChangeEmail = (event) => {
-        setEmail(event.target.value);
-    };
+    const ENTRENAMIENTO =
+        [
+            "CALISTENIA",
+            "APARATOS",
+            "FUNCIONAL"
+        ]
 
-    const handleChangeDNI = (event) => {
-        setDNI(event.target.value);
-    };
 
-    const handleChangeEdad = (event) => {
-        setEdad(event.target.value);
-    };
 
-    const handleImage = (event) => {
-        console.log(event.target.files);
-        console.log(event.target.files[0]);
-        setImage(event.target.files[0]);
-    };
 
     useEffect(() => {
         getAllSocios().then((response) => {
@@ -62,14 +55,13 @@ const NewPago = () => {
                 };
             });
             setSocios(parsedData);
-        }).catch((error) => {   
+        }).catch((error) => {
             console.log(error);
         });
     }, []);
 
     useEffect(() => {
-        if(Socio!==undefined)
-        {
+        if (Socio !== undefined) {
             setApellido(Socio.apellido)
             setNombre(Socio.nombre)
             setEdad(Socio.edad)
@@ -77,35 +69,42 @@ const NewPago = () => {
             setDNI(Socio.dni)
             setDomicilio(Socio.domicilio)
         }
-  
+
     }, [Socio]);
 
+    const handleChangeTipoPago = (event) => {
+        setTipoPago(event.target.value);
+    };
 
+    const handleChangeTipoEntrenamiento = (event) => {
+        setTipoEntrenamiento(event.target.value);
+    };
 
-
+    const handleChangeMonto = (event) => {
+        setMonto(event.target.value);
+        console.log(event.target.value);
+    };
 
     function AddPago() {
-        // postNewPago(Nombre, Apellido, Email, Edad, Domicilio, fechaNacimiento, DNI, Celular, telFijo, "ACTIVO").then((response) => {
-        //     Swal.fire({
-        //         title: "Socio registrado con exito!",
-        //         icon: 'success',
-        //         willClose: () => {
-        //             setTimeout(() => {
-        //                 history.push(rootPath + '/Socios');
-        //             }, 1500);
-        //         }
-        //     })
+        postNewPago(Socio.id, TipoEntrenamiento, TipoPago, Monto).then((response) => {
+            Swal.fire({
+                title: "Pago realizado con exito!",
+                icon: 'success',
+                willClose: () => {
+                        history.push(rootPath + '/Pagos');
+                }
+            })
 
-        //     console.log(response);
-        // })
+            console.log(response);
+        })
 
-        //     .catch((error) => {
-        //         Swal.fire({
-        //             title: error.response.data.message,
-        //             icon: 'error',
+            .catch((error) => {
+                Swal.fire({
+                    title: error.response.data.message,
+                    icon: 'error',
 
-        //         })
-        //     });
+                })
+            });
 
     }
     function goToBack() {
@@ -128,7 +127,7 @@ const NewPago = () => {
                         options={Socios}
                         value={Socio}
                         onChange={(event, newValue) => {
-                          setSocio(newValue);
+                            setSocio(newValue);
                         }}
                         sx={{ width: 300 }}
                         getOptionLabel={(option) => option.dni}
@@ -146,7 +145,7 @@ const NewPago = () => {
                             ".css-1wc848c-MuiFormHelperText-root": {
                                 fontSize: "1rem",
                             },
-                        }} value={Nombre} onChange={handleChangeNombre} />
+                        }} value={Nombre} />
                     </FormControl>
                 </Grid>
                 <Grid md={6} xs={10}  >
@@ -155,7 +154,7 @@ const NewPago = () => {
                             ".css-1wc848c-MuiFormHelperText-root": {
                                 fontSize: "1rem",
                             },
-                        }} variant="filled" value={Apellido} onChange={handleChangeDescripcion} />
+                        }} variant="filled" value={Apellido} />
                     </FormControl>
                 </Grid>
 
@@ -167,7 +166,7 @@ const NewPago = () => {
                             ".css-1wc848c-MuiFormHelperText-root": {
                                 fontSize: "1rem",
                             },
-                        }} value={Email} onChange={handleChangeEmail} />
+                        }} value={Email} />
                     </FormControl>
                 </Grid>
                 <Grid md={6} xs={10}  >
@@ -176,7 +175,7 @@ const NewPago = () => {
                             ".css-1wc848c-MuiFormHelperText-root": {
                                 fontSize: "1rem",
                             },
-                        }} variant="filled" value={Domicilio} onChange={handleChangeDomicilio} />
+                        }} variant="filled" value={Domicilio} />
                     </FormControl>
                 </Grid>
 
@@ -188,7 +187,7 @@ const NewPago = () => {
                             ".css-1wc848c-MuiFormHelperText-root": {
                                 fontSize: "1rem",
                             },
-                        }} variant="filled" value={DNI} onChange={handleChangeDNI} />
+                        }} variant="filled" value={DNI} />
                     </FormControl>
                 </Grid>
                 <FormControl >
@@ -196,11 +195,67 @@ const NewPago = () => {
                         ".css-1wc848c-MuiFormHelperText-root": {
                             fontSize: "1rem",
                         },
-                    }} disabled variant="filled" value={Edad} onChange={handleChangeEdad} />
+                    }} disabled variant="filled" value={Edad} />
                 </FormControl>
             </Grid>
 
+            <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
+                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
+                    <FormControl >
+                        <InputLabel id="demo-simple-select-label">Tipo de Pago</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={TipoPago}
+                            label="Tipo de Pago"
+                            onChange={handleChangeTipoPago}
+                        >
+                            {PAGOS.map((item) => (
+                                <MenuItem value={item}>{item}</MenuItem>
+                            ))
+                            }
 
+
+                        </Select>
+                    </FormControl>
+
+                </Grid>
+                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Tipo de Entrenamiento</InputLabel>
+                        <Select
+
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={TipoEntrenamiento}
+                            label="Tipo de Entrenamiento"
+                            onChange={handleChangeTipoEntrenamiento}
+                        >
+                            {ENTRENAMIENTO.map((item) => (
+                                <MenuItem value={item}>{item}</MenuItem>
+                            ))
+                            }
+
+
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
+
+            <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
+                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
+                    <FormControl  sx={{ m: 1 }}>
+                        <InputLabel htmlFor="outlined-adornment-amount">Monto</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-amount"
+                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                            label="Monto"
+                            value={Monto}
+                            onChange={handleChangeMonto}
+                        />
+                    </FormControl>
+                </Grid>
+            </Grid>
 
             {/* <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
                 <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
@@ -220,9 +275,6 @@ const NewPago = () => {
                     <Typography>{Image ? Image.name : null}</Typography>
                 </Grid>
             </Grid> */}
-
-
-
 
             <Stack spacing={2} sx={{ width: '100%' }}>
                 <Button variant="contained" color='success' onClick={AddPago}>

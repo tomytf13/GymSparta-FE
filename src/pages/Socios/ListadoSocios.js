@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid'
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { getAllSocios } from '../../api/SociosApiCalls.js/SociosApiCalls';
 import { rootPath } from '../../App';
 
@@ -12,17 +11,8 @@ const ListadoSocios = () => {
     const history = useHistory();
     const [Socios, setSocios] = useState([]);
     const [loadingData, setLoadingData] = useState(false);
-    const [dense, setDense] = useState(false);
-    const [secondary, setSecondary] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
-    const [modalProps, setModalProps] = useState({
-        show: false,
-        message: '',
-        header: '',
-        type: '',
-        confirmButtonMessage: '',
-        onConfirm: () => { },
-    });
+ 
 
     const columns = [
         { field: 'id', headerName: 'ID Socio', width: 100, headerAlign: 'center', hiden: true },
@@ -69,17 +59,7 @@ const ListadoSocios = () => {
 
 
     const setError = (error, header) => {
-        let message;
-        if (error.response) {
-            message = error.response.data.Message;
-        }
         console.log(error);
-        setModalProps({
-            show: true,
-            message: message ? message : error.message,
-            header: header ? header : 'Error',
-            type: 'error',
-        });
     };
 
     useEffect(() => {
@@ -107,24 +87,7 @@ const ListadoSocios = () => {
         history.push(rootPath + '/Socios/NewSocio')
     };
 
-    const loadDataTable = () => {
-        getAllSocios().then((response) => {
-            const parsedData = response.map((Socio) => {
-                return {
-                    id: Socio._id,
-                    nombre: Socio.nombre,
-                    apellido: Socio.apellido,
-                    dni: Socio.dni,
-                    celular: Socio.celular
-                };
-            });
-            setSocios(parsedData);
-            setLoadingData(false)
-        }).catch((error) => {
-            setError(error, 'Error al listar Socios.');
-        });
-
-    }
+    
 
 
 
