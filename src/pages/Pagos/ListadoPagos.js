@@ -43,6 +43,11 @@ const ListadoPagos = () => {
             headerName: 'Fecha de Pago',
             width: 300,
         },
+        {
+            field: 'vencimiento',
+            headerName: 'Vencimiento',
+            width: 300,
+        },
     ];
 
 
@@ -66,7 +71,8 @@ const ListadoPagos = () => {
                     tipoEntrenamiento: Pago.tipoEntrenamiento,
                     tipoPago: Pago.tipoPago,
                     monto: Pago.monto,
-                    fechaPago:  (new Date(Pago.createAt)).getDate() + '/' +  (new Date(Pago.createAt)).getMonth() + '/' +  (new Date(Pago.createAt)).getFullYear()+ ' ' + (new Date(Pago.createAt)).getHours()+':'+ (new Date(Pago.createAt)).getMinutes()
+                    fechaPago:  (new Date(Pago.createAt)).getDate() + '/' +  ((new Date(Pago.createAt)).getMonth()+1) + '/' +  (new Date(Pago.createAt)).getFullYear()+ ' ' + (new Date(Pago.createAt)).getHours()+':'+ (new Date(Pago.createAt)).getMinutes(),
+                    vencimiento: (new Date(Pago.vencimiento)).getDate() + '/' +  ((new Date(Pago.vencimiento)).getMonth()+1) + '/' +  (new Date(Pago.vencimiento)).getFullYear()+ ' ' + (new Date(Pago.vencimiento)).getHours()+':'+ (new Date(Pago.vencimiento)).getMinutes()
                 };
             });
             setPagos(parsedData);

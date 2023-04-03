@@ -7,6 +7,7 @@ import NewSocio from './pages/Socios/NewSocio';
 import EditSocio from './pages/Socios/EditSocio';
 import ListadoPagos from './pages/Pagos/ListadoPagos';
 import NewPago from './pages/Pagos/NewPago';
+import Entrada from './pages/Entrada/Entrada';
 export const rootPath ='/Gym';
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path={rootPath + '/Pagos'}>
             <ListadoPagos></ListadoPagos>
+          </Route>
+          <Route path={rootPath + '/Entrada'}>
+            <Entrada></Entrada>
           </Route>
          
 
