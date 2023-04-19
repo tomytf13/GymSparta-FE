@@ -19,17 +19,17 @@ const ListadoSocios = () => {
         {
             field: 'nombre',
             headerName: 'Nombre',
-            width: 300,
+            width: 150,
         },
         {
             field: 'apellido',
             headerName: 'Apellido',
-            width: 300,
+            width: 150,
         },
         {
             field: 'dni',
             headerName: 'DNI',
-            width: 300,
+            width: 150,
         }
         ,
         {

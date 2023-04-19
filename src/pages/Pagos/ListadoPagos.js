@@ -18,9 +18,19 @@ const ListadoPagos = () => {
     const columns = [
         { field: 'id', headerName: 'ID Pago', width: 100, headerAlign: 'center', hiden: true },
         {
-            field: 'idSocio',
-            headerName: 'Socio ID',
-            width: 300,
+            field: 'nombre',
+            headerName: 'Nombre',
+            width: 100,
+        },
+        {
+            field: 'apellido',
+            headerName: 'Apellido',
+            width: 100,
+        },
+        {
+            field: 'dni',
+            headerName: 'DNI',
+            width: 150,
         },
         {
             field: 'tipoEntrenamiento',
@@ -41,12 +51,12 @@ const ListadoPagos = () => {
         {
             field: 'fechaPago',
             headerName: 'Fecha de Pago',
-            width: 300,
+            width: 200,
         },
         {
             field: 'vencimiento',
             headerName: 'Vencimiento',
-            width: 300,
+            width: 200,
         },
     ];
 
@@ -64,14 +74,17 @@ const ListadoPagos = () => {
     useEffect(() => {
         setLoadingData(true)
         getAllPagos().then((response) => {
+            console.log(response);
             const parsedData = response.map((Pago) => {
                 return {
                     id: Pago._id,
-                    idSocio: Pago.idSocio,
+                    nombre:Pago.socio.nombre,
+                    apellido:Pago.socio.apellido,
+                    dni:Pago.socio.dni,
                     tipoEntrenamiento: Pago.tipoEntrenamiento,
                     tipoPago: Pago.tipoPago,
                     monto: Pago.monto,
-                    fechaPago:  (new Date(Pago.createAt)).getDate() + '/' +  ((new Date(Pago.createAt)).getMonth()+1) + '/' +  (new Date(Pago.createAt)).getFullYear()+ ' ' + (new Date(Pago.createAt)).getHours()+':'+ (new Date(Pago.createAt)).getMinutes(),
+                    fechaPago:  (new Date(Pago.fechaPago)).getDate() + '/' +  ((new Date(Pago.fechaPago)).getMonth()+1) + '/' +  (new Date(Pago.fechaPago)).getFullYear()+ ' ' + (new Date(Pago.fechaPago)).getHours()+':'+ (new Date(Pago.fechaPago)).getMinutes(),
                     vencimiento: (new Date(Pago.vencimiento)).getDate() + '/' +  ((new Date(Pago.vencimiento)).getMonth()+1) + '/' +  (new Date(Pago.vencimiento)).getFullYear()+ ' ' + (new Date(Pago.vencimiento)).getHours()+':'+ (new Date(Pago.vencimiento)).getMinutes()
                 };
             });

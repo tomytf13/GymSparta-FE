@@ -15,9 +15,9 @@ export const getAllPagos = async () =>{
 }
 
 
-export const postNewPago = async (IdSocio,TipoEntrenamiento,TipoPago,Monto,FechaPago,Cuotas) => {
+export const postNewPago = async (Socio,TipoEntrenamiento,TipoPago,Monto,FechaPago,Cuotas) => {
     const body ={
-        idSocio:IdSocio,
+        socio:Socio,
         tipoEntrenamiento:TipoEntrenamiento,
         tipoPago:TipoPago,
         monto:Monto,

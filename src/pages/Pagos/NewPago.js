@@ -52,11 +52,14 @@ const NewPago = () => {
                     id: Socio._id,
                     nombre: Socio.nombre,
                     apellido: Socio.apellido,
-                    dni: Socio.dni,
-                    celular: Socio.celular,
                     hotmail: Socio.hotmail,
                     edad: Socio.edad,
-                    domicilio: Socio.domicilio
+                    domicilio: Socio.domicilio,
+                    fechaNacimiento:Socio.fechaNacimiento,
+                    dni: Socio.dni,
+                    celular: Socio.celular,
+                    telFijo:Socio.telFijo,
+                    estado:Socio.estado
                 };
             });
             setSocios(parsedData);
@@ -111,7 +114,7 @@ const NewPago = () => {
             })
         }
         if (Socio !== undefined) {
-            postNewPago(Socio.id, TipoEntrenamiento, TipoPago, Monto, FechaPago, Cuotas).then((response) => {
+            postNewPago(Socio, TipoEntrenamiento, TipoPago, Monto, FechaPago, Cuotas).then((response) => {
                 Swal.fire({
                     title: "Pago realizado con exito!",
                     icon: 'success',
