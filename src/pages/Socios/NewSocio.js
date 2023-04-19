@@ -62,6 +62,49 @@ const NewSocio = () => {
 
 
     function AddSocio() {
+        if (Nombre===undefined) {
+            return Swal.fire({
+                title: 'Por favor ingresar nombre del socio.',
+                icon: 'error',
+
+            })
+        }
+        if (Apellido===undefined) {
+            return Swal.fire({
+                title: 'Por favor ingresar apellido del socio.',
+                icon: 'error',
+
+            })
+        }
+        if (Domicilio===undefined) {
+            return Swal.fire({
+                title: 'Por favor ingresar domicilio del socio.',
+                icon: 'error',
+
+            })
+        }
+        if (Edad===undefined) {
+            return Swal.fire({
+                title: 'Por favor ingresar edad del socio.',
+                icon: 'error',
+
+            })
+        }
+   
+        if (fechaNacimiento==='') {
+            return Swal.fire({
+                title: 'Por favor ingresar fecha de nacimiento del socio.',
+                icon: 'error',
+
+            })
+        }
+        if (DNI===undefined) {
+            return Swal.fire({
+                title: 'Por favor ingresar DNI del socio.',
+                icon: 'error',
+
+            })
+        }
         postNewSocio(Nombre, Apellido, Email, Edad, Domicilio, fechaNacimiento, DNI, Celular, telFijo, "ACTIVO").then((response) => {
             Swal.fire({
                 title: "Socio registrado con exito!",

@@ -44,13 +44,13 @@ const Entrada = () => {
                 let vencimiento = Date.parse(pago.vencimiento);
                 if (fechahoy <= vencimiento) {
                     Swal.fire({
-                        title: 'Socio: ' + Socio.nombre + ' ' + Socio.apellido + ' se encuentra al dia! 😊',
+                        title: 'Socio: ' + Socio.nombre + ' ' + Socio.apellido + ' se encuentra al dia! 😊<br> El proximo vencimiento es: <br>'+ (new Date(pago.vencimiento)).getDate() + '/' +  ((new Date(pago.vencimiento)).getMonth()) + '/' +  (new Date(pago.vencimiento)).getFullYear(),
                         icon: 'success',
                     })
                 }
                 else {
                     Swal.fire({
-                        title: 'El socio: ' + Socio.nombre + ' ' + Socio.apellido + ' no se encuentra al dia ! 😒',
+                        title: 'El socio: ' + Socio.nombre + ' ' + Socio.apellido + ' no se encuentra al dia ! 😒 Su vencimiento fue el : <br>'+ (new Date(pago.vencimiento)).getDate() + '/' +  ((new Date(pago.vencimiento)).getMonth()) + '/' +  (new Date(pago.vencimiento)).getFullYear(),
                         icon: 'error',
                     })
                 }

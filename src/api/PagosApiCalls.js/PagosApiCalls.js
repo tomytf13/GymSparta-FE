@@ -15,13 +15,16 @@ export const getAllPagos = async () =>{
 }
 
 
-export const postNewPago = async (IdSocio,TipoEntrenamiento,TipoPago,Monto) => {
+export const postNewPago = async (IdSocio,TipoEntrenamiento,TipoPago,Monto,FechaPago,Cuotas) => {
     const body ={
         idSocio:IdSocio,
         tipoEntrenamiento:TipoEntrenamiento,
         tipoPago:TipoPago,
         monto:Monto,
+        fechaPago: FechaPago,
+        cuotas:Cuotas
     }
+    console.log(body);
     try {
         const response = await axios.post(rootApiPath+"/pago",body);
         return response;

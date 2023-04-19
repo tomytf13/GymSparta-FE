@@ -5,6 +5,9 @@ import { rootPath } from '../../App'
 import { getAllSocios } from '../../api/SociosApiCalls.js/SociosApiCalls';
 import Swal from 'sweetalert2';
 import { postNewPago } from '../../api/PagosApiCalls.js/PagosApiCalls';
+import { MobileDatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const NewPago = () => {
 
@@ -18,9 +21,11 @@ const NewPago = () => {
     const [DNI, setDNI] = useState("");
     const [Edad, setEdad] = useState("");
     const [Image, setImage] = useState();
+    const [FechaPago, setFechaPago] = useState('');
     const [TipoPago, setTipoPago] = useState('MENSUAL');
     const [TipoEntrenamiento, setTipoEntrenamiento] = useState('APARATOS');
     const [Monto, setMonto] = useState('');
+    const [Cuotas, setCuotas] = useState('1');
 
 
     const PAGOS =
@@ -84,27 +89,57 @@ const NewPago = () => {
         setMonto(event.target.value);
         console.log(event.target.value);
     };
+    const handleChangeCuotas = (event) => {
+        setCuotas(event.target.value);
+        console.log(event.target.value);
+    };
 
     function AddPago() {
-        postNewPago(Socio.id, TipoEntrenamiento, TipoPago, Monto).then((response) => {
-            Swal.fire({
-                title: "Pago realizado con exito!",
-                icon: 'success',
-                willClose: () => {
+
+
+        if (FechaPago === '') {
+            return Swal.fire({
+                title: 'Por favor ingrese fecha de pago.',
+                icon: 'error',
+            })
+        }
+
+        if (Monto === '') {
+            return Swal.fire({
+                title: 'Por favor ingrese un monto.',
+                icon: 'error',
+            })
+        }
+        if (Socio !== undefined) {
+            postNewPago(Socio.id, TipoEntrenamiento, TipoPago, Monto, FechaPago, Cuotas).then((response) => {
+                Swal.fire({
+                    title: "Pago realizado con exito!",
+                    icon: 'success',
+                    willClose: () => {
                         history.push(rootPath + '/Pagos');
-                }
+                    }
+                })
+
+                console.log(response);
             })
 
-            console.log(response);
-        })
+                .catch((error) => {
+                    Swal.fire({
+                        title: error.response.data.message,
+                        icon: 'error',
 
-            .catch((error) => {
-                Swal.fire({
-                    title: error.response.data.message,
-                    icon: 'error',
+                    })
+                });
 
-                })
-            });
+        }
+        else {
+            Swal.fire({
+                title: 'Por favor seleccione un socio antes de generar un pago.',
+                icon: 'error',
+            })
+        }
+
+
 
     }
     function goToBack() {
@@ -244,7 +279,25 @@ const NewPago = () => {
 
             <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
                 <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
-                    <FormControl  sx={{ m: 1 }}>
+                    <FormControl sx={{ width: '10rem' }} >
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <MobileDatePicker
+                                label="Fecha de Pago"
+                                openTo='year'
+                                views={['year', 'month', 'day']}
+                                value={FechaPago}
+                                onChange={(newValue) => {
+                                    setFechaPago(newValue);
+                                }}
+                                inputFormat='DD/MM/YYYY'
+                                renderInput={(params) => <TextField {...params} helperText='Ingrese fecha de Pago' />}
+                            />
+                        </LocalizationProvider>
+                    </FormControl>
+                </Grid>
+
+                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
+                    <FormControl sx={{ m: 1 }}>
                         <InputLabel htmlFor="outlined-adornment-amount">Monto</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-amount"
@@ -252,6 +305,18 @@ const NewPago = () => {
                             label="Monto"
                             value={Monto}
                             onChange={handleChangeMonto}
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
+                    <FormControl sx={{ m: 1 }}>
+                        <InputLabel htmlFor="outlined-adornment-amount">Cuotas</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-amount"
+                            label="Cuotas"
+                            type='number'
+                            value={Cuotas}
+                            onChange={handleChangeCuotas}
                         />
                     </FormControl>
                 </Grid>
