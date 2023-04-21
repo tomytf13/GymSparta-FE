@@ -49,7 +49,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             style={{color:'yellow'}}
-            href="/"
+            onClick={()=>history.push(rootPath+'/Inicio')}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },

@@ -8,6 +8,7 @@ import EditSocio from './pages/Socios/EditSocio';
 import ListadoPagos from './pages/Pagos/ListadoPagos';
 import NewPago from './pages/Pagos/NewPago';
 import Entrada from './pages/Entrada/Entrada';
+import Inicio from './pages/Inicio/Inicio';
 export const rootPath ='/Gym';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <HashRouter>
         <ResponsiveAppBar></ResponsiveAppBar>
         <Switch>
+       
           <Route path={'/Login'}>
             <Login></Login>
           </Route>
@@ -38,7 +40,9 @@ function App() {
           <Route path={rootPath + '/Entrada'}>
             <Entrada></Entrada>
           </Route>
-         
+          <Route path={rootPath+'/Inicio'}>
+            <Inicio></Inicio>
+          </Route>
 
         </Switch>
       </HashRouter>
