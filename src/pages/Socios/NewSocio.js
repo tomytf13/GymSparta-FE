@@ -241,7 +241,7 @@ const NewSocio = () => {
 
             </Grid>
 
-            <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
+            {/* <Grid container spacing={2} style={{ margin: 10, marginLeft: 10 }}>
                 <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
                     <Button
                         variant="contained"
@@ -258,7 +258,7 @@ const NewSocio = () => {
                 <Grid xs={12} md={3} style={{ marginBottom: 10 }} >
                 <Typography>{Image? Image.name: null}</Typography>
                 </Grid>
-            </Grid>
+            </Grid> */}
 
 
 

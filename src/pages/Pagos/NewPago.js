@@ -69,7 +69,17 @@ const NewPago = () => {
     }, []);
 
     useEffect(() => {
-        if (Socio !== undefined) {
+        console.log(Socio);
+        if(Socio===null)
+        {
+            setApellido("")
+            setNombre("")
+            setEdad("")
+            setEmail("")
+            setDNI("")
+            setDomicilio("")
+        }
+        if (Socio !== undefined && Socio!==null) {
             setApellido(Socio.apellido)
             setNombre(Socio.nombre)
             setEdad(Socio.edad)
@@ -113,7 +123,7 @@ const NewPago = () => {
                 icon: 'error',
             })
         }
-        if (Socio !== undefined) {
+        if (Socio !== undefined && Socio!==null) {
             postNewPago(Socio, TipoEntrenamiento, TipoPago, Monto, FechaPago, Cuotas).then((response) => {
                 Swal.fire({
                     title: "Pago realizado con exito!",
