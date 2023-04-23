@@ -22,6 +22,9 @@ function App() {
           <Route path={'/Login'}>
             <Login></Login>
           </Route>
+          <Route path={rootPath+'/Inicio'}>
+            <Inicio></Inicio>
+          </Route>
           <Route path={rootPath + '/Socios/EditSocio/:id'}>
             <EditSocio></EditSocio>
           </Route>
@@ -40,9 +43,7 @@ function App() {
           <Route path={rootPath + '/Entrada'}>
             <Entrada></Entrada>
           </Route>
-          <Route path={rootPath+'/Inicio'}>
-            <Inicio></Inicio>
-          </Route>
+          
 
         </Switch>
       </HashRouter>
