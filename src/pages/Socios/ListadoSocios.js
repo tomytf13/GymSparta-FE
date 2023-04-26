@@ -15,7 +15,7 @@ const ListadoSocios = () => {
  
 
     const columns = [
-        { field: 'id', headerName: 'ID Socio', width: 100, headerAlign: 'center', hiden: true },
+        { field: 'id', headerName: 'ID Socio', width: 100, headerAlign: 'center', hidden: true },
         {
             field: 'nombre',
             headerName: 'Nombre',
@@ -35,12 +35,17 @@ const ListadoSocios = () => {
         {
             field: 'celular',
             headerName: 'Celular',
-            width: 300,
+            width: 200,
+        }, 
+         {
+            field: 'domicilio',
+            headerName: 'Domicilio',
+            width: 500,
         },
         {
             field: 'acciones',
             headerName: 'Acciones',
-            width: 300,
+            width: 100,
             disableClickEventBubbling: true,
             renderCell: (params) => {
                 const onEdit = (e) => {
@@ -71,7 +76,8 @@ const ListadoSocios = () => {
                     nombre: Socio.nombre,
                     apellido: Socio.apellido,
                     dni: Socio.dni,
-                    celular: Socio.celular
+                    celular: Socio.celular,
+                    domicilio:Socio.domicilio
                 };
             });
             setSocios(parsedData);
